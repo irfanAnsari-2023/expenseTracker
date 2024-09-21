@@ -12,7 +12,7 @@ import com.ansari.expensetrackerapi.entity.Expense;
 import com.ansari.expensetrackerapi.repository.ExpenseRepository;
 
 @Service
-public class ExpenseServiceImpl implements ExpenseService{
+public  class ExpenseServiceImpl implements ExpenseService{
 	
 
 	@Autowired
@@ -33,6 +33,26 @@ public class ExpenseServiceImpl implements ExpenseService{
 		
 		
 	}
+	@Override
+	public void deleteExpenseById(Long id) {
+		expenseRepo.deleteById(id);
+		
+	}
+	@Override
+	public Expense saveExpenseDetails(Expense expense) {
+		return expenseRepo.save(expense);
+	}
+	@Override
+	public Expense updateExpenseDetails(Long id, Expense expense) {
+		Expense existingExpense = getExpneseById(id);
+		existingExpense.setName(expense.getName()!= null ? expense.getName() : existingExpense.getName());
+		existingExpense.setDescription(expense.getDescription()!= null ? expense.getDescription() : existingExpense.getDescription());
+		existingExpense.setCategory(expense.getCategory()!= null ? expense.getCategory() : existingExpense.getCategory());
+		existingExpense.setAmount(expense.getAmount()!= null ? expense.getAmount() : existingExpense.getAmount());
+		existingExpense.setDate(expense.getDate()!= null ? expense.getDate() : existingExpense.getDate());
+		return expenseRepo.save(existingExpense);
+	}
+	
 
 	
 }

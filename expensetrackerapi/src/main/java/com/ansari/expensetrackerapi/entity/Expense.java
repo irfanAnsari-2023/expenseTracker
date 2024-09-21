@@ -2,6 +2,10 @@ package com.ansari.expensetrackerapi.entity;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.sql.Timestamp;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,6 +24,8 @@ import lombok.NoArgsConstructor;
 @Table(name="tbl_expenses")
 public class Expense {
 
+	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -35,8 +41,32 @@ public class Expense {
 	
 	private String category;
 	
+	@Column(name = "created_at", nullable = false, updatable = false)
+	@CreationTimestamp
+	private Timestamp createdAt;
+	
+	@Column(name = "updated_at")
+	@UpdateTimestamp
+	private Timestamp updatedAt;
+	
 	public Long getId() {
 		return id;
+	}
+
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Timestamp getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Timestamp updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 
 	public void setId(Long id) {
@@ -84,4 +114,11 @@ public class Expense {
 	}
 
 	private Date date;
+	
+	@Override
+	public String toString() {
+		return "Expense [id=" + id + ", name=" + name + ", description=" + description + ", amount=" + amount
+				+ ", category=" + category + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", date=" + date
+				+ "]";
+	}
 }
