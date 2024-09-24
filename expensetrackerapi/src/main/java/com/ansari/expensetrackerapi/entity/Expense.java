@@ -13,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -35,20 +36,22 @@ public class Expense {
 	
 	@jakarta.validation.constraints.NotNull
 	@NotEmpty(message = "Name should not be empty")
-	@Size(min =3, message="Expense name must be of atleast 3 chars")
+	@Size(min = 2, max = 50, message = "Expense name must be between 2 and 50 characters")
 	@Column(name = "expense_name")
 	private String name;
 	
+	 @Size(max = 200, message = "Description can't be longer than 200 characters")
 	private String description;
 	
-	@jakarta.validation.constraints.NotNull(message="Expense amount should not be null")
+	@jakarta.validation.constraints.NotNull(message="Expense amount should is required")
 	@Column(name = "expense_amt")
 	private BigDecimal amount;
 	
 	@jakarta.validation.constraints.NotNull(message="Category should not be null")
+	@NotBlank(message = "Category is mandatory")
 	private String category;
 	
-	@jakarta.validation.constraints.NotNull(message="Date should not be null")
+	@jakarta.validation.constraints.NotNull(message="Date is required")
 	private Date date;
 	
 	@Column(name = "created_at", nullable = false, updatable = false)
