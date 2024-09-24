@@ -13,6 +13,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,16 +32,24 @@ public class Expense {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	
+	@jakarta.validation.constraints.NotNull
+	@NotEmpty(message = "Name should not be empty")
+	@Size(min =3, message="Expense name must be of atleast 3 chars")
 	@Column(name = "expense_name")
 	private String name;
 	
-	
 	private String description;
 	
+	@jakarta.validation.constraints.NotNull(message="Expense amount should not be null")
 	@Column(name = "expense_amt")
 	private BigDecimal amount;
 	
+	@jakarta.validation.constraints.NotNull(message="Category should not be null")
 	private String category;
+	
+	@jakarta.validation.constraints.NotNull(message="Date should not be null")
+	private Date date;
 	
 	@Column(name = "created_at", nullable = false, updatable = false)
 	@CreationTimestamp
@@ -113,7 +123,7 @@ public class Expense {
 		this.date = date;
 	}
 
-	private Date date;
+	
 	
 	@Override
 	public String toString() {

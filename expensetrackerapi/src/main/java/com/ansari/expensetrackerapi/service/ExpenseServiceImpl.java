@@ -4,11 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.ansari.expensetrackerapi.entity.Expense;
+import com.ansari.expensetrackerapi.exceptions.ExpenseNotFoundException;
 import com.ansari.expensetrackerapi.repository.ExpenseRepository;
 
 @Service
@@ -19,29 +22,34 @@ public  class ExpenseServiceImpl implements ExpenseService{
 	private ExpenseRepository expenseRepo;
 	
 	@Override
-	public List<Expense> getAllExpense() {
-		return expenseRepo.findAll();
+	public Page<Expense> getAllExpense(Pageable pageable) {
+		return expenseRepo.findAll(pageable);
 	}
 	@Override
 	public Expense getExpneseById(Long id) {
 		Optional<Expense> expense = expenseRepo.findById(id);
 		if(expense.isPresent()) {
 			return expense.get();		
-		}else {
-			throw new RuntimeException("Expense is not found for the id : "+id);
 		}
-		
-		
+		throw new ExpenseNotFoundException("Expense is not found for the id "+id);
+//		else {
+//			throw new RuntimeException("Expense is not found for the id : "+id);
+//			writing custom exceptions
+//		}
+			
 	}
+	
 	@Override
 	public void deleteExpenseById(Long id) {
 		expenseRepo.deleteById(id);
 		
 	}
+	
 	@Override
 	public Expense saveExpenseDetails(Expense expense) {
 		return expenseRepo.save(expense);
 	}
+	
 	@Override
 	public Expense updateExpenseDetails(Long id, Expense expense) {
 		Expense existingExpense = getExpneseById(id);
